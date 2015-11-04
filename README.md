@@ -23,9 +23,10 @@ TODO
 - [ ] working
 - [ ] working distribuited
 
-# MPI Manual
+## MPI Manual
 https://pythonhosted.org/mpi4py/mpi4py.pdf
 
+## Licence
 ``` python
 print 'hello python!'
 ```
