@@ -18,4 +18,4 @@ def individualEquals(ind1, ind2):
 		if x == y:
 			eq += 1
 	
-	return float(qe / size)
+	return (float(eq) / size)
