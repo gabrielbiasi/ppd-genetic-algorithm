@@ -20,6 +20,12 @@ def similarity_of_individuals(ind1, ind2):
     return float(hamming_distance) / len(ind1)
 
 
+def update_model(model, individual, alpha):
+    for i in xrange(len(model)):
+        model[i] = model[i] * (1.0 - alpha) + individual[i] * alpha
+    return model
+
+
 def mutate_model(model):
     for i, x in enumerate(model):
         if random.random() < conf.MUT_PROB:
