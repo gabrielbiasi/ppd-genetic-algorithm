@@ -6,16 +6,11 @@ def to_bin(number):
 	return list(bin(number))[2:]
 
 def to_int(binary):
-	return int(''.join(v), 2)
+	return int(''.join(binary), 2)
 
-def individualEquals(ind1, ind2):
+def similarity_of_individuals(ind1, ind2):
 	if len(ind1) != len(ind2):
 		raise Exception('The chromossomes have different sizes!')
 
-	eq = 0
-	size = len(ind1)
-	for x, y in zip(ind1, ind2):
-		if x == y:
-			eq += 1
-	
-	return (float(eq) / size)
+	hamming_distance = sum(c1 == c2 for c1, c2 in zip(ind1, ind2))
+	return float(hamming_distance) / len(ind1)
