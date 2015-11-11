@@ -21,6 +21,6 @@ def individualEquals(ind1, ind2):
 	return (float(eq) / size)
 
 def updateProbabilistModel(model, individual, alpha):
-	for i in range(0, len(model)):
+	for i in xrange(len(model)):
 		model[i] = model[i] * (1.0 - alpha) + individual[i] * alpha
 	return model
