@@ -12,11 +12,11 @@ def new_individual():
         ind.append(str(random.randint(0,1)))
     return ind
 
-def get_fitness(chromosome):
+def get_fitness(li):
     v = []
-    v.append(util.to_int(chromosome[:10]))
-    v.append(util.to_int(chromosome[10:20]))
-    v.append(util.to_int(chromosome[20:30]))
+    v.append(util.to_int(li[:10]))
+    v.append(util.to_int(li[10:20]))
+    v.append(util.to_int(li[20:30]))
 
     print v
 

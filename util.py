@@ -31,3 +31,11 @@ def mutate_model(model):
         if random.random() < conf.MUT_PROB:
             model[i] = x * (1.0 - conf.MUT_SH) + random.randint(0,1) * conf.MUT_SH
     return model
+
+
+def new_population(problem):
+    population_size = (problem.NUM_BITS ** 2) / 2
+    pop = []
+    for x in xrange(population_size):
+        pop.append(problem.new_individual())
+    return pop
