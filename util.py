@@ -20,16 +20,16 @@ def similarity_of_individuals(ind1, ind2):
     return float(hamming_distance) / len(ind1)
 
 
-def create_model(individual, alpha):
+def create_model(individual):
     model = []
     for x in individual:
         # TODO
-        model.append((0.5 - alpha) * int(x)  + alpha)
+        model.append((0.5 - conf.ALPHA) * int(x)  + conf.ALPHA)
     return model
 
-def update_model(model, individual, alpha):
+def update_model(model, individual):
     for i in xrange(len(model)):
-        model[i] = model[i] * (1.0 - alpha) + int(individual[i]) * alpha
+        model[i] = model[i] * (1.0 - conf.ALPHA) + int(individual[i]) * conf.ALPHA
 
 
 def mutate_model(model):
@@ -37,6 +37,11 @@ def mutate_model(model):
         if random.random() < conf.MUT_PROB:
             model[i] = x * (1.0 - conf.MUT_SH) + random.randint(0,1) * conf.MUT_SH
 
+def learning(q):
+    if q > 0:
+        conf.ALPHA = conf.ALPHA * (1 + q)
+    else:
+        conf.ALPHA = conf.ALPHA_INIT
 
 def new_population(problem):
     population_size = (problem.NUM_BITS ** 2) / 2

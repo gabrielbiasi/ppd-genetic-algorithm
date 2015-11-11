@@ -19,11 +19,11 @@ def run(problem):
 
     models = []
     last_generated = pop[0]
-    models.append(util.create_model(last_generated, conf.ALPHA))
+    models.append(util.create_model(last_generated))
 
     for x in xrange(1, population_size):
         if util.similarity_of_individuals(pop[x], last_generated) <= 0.25:
-            models.append(util.create_model(last_generated, conf.ALPHA))
+            models.append(util.create_model(last_generated))
             last_generated = pop[x]
 
     aux = []
@@ -66,6 +66,7 @@ def run(problem):
         # Calculate the bestest #
         b = bests[0]
         for best in bests:
+            print best
             print problem.get_fitness(best)
             if math.fabs(problem.get_fitness(b)) > math.fabs(problem.get_fitness(best)):
                 b = best
@@ -75,27 +76,28 @@ def run(problem):
             print 'FINISHED'
             print problem.get_fitness(b)
             v = []
-            v.append(util.to_int(b[:9]))
-            v.append(util.to_int(b[10:19]))
-            v.append(util.to_int(b[20:29]))
+            v.append(util.to_int(b[:10]))
+            v.append(util.to_int(b[10:20]))
+            v.append(util.to_int(b[20:30]))
             print v
             return
 
         # Calculate the new probabilist models #
         for model in models:
-            util.update_model(model, b, conf.ALPHA)
+            util.update_model(model, b)
 
         # Mutate each probabilist model #
         for model in models:
             util.mutate_model(model)
 
         print 'melhor: ', problem.get_fitness(b)
+        oi += 1
 
 
-    #for x in xrange(len(models)):
-    #    print '>>', x, '<<'
-    #    for y in xrange(len(models[x])):
-    #        print aux[x][y], " -> ", models[x][y]
+    for x in xrange(len(models)):
+        print '>>', x, '<<'
+        for y in xrange(len(models[x])):
+            print aux[x][y], " -> ", models[x][y]
 
 if __name__ == '__main__':
     print 'INIT'

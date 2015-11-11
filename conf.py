@@ -2,7 +2,8 @@
 hello
 """
 
-ALPHA = 0.05
+ALPHA_INIT = 0.05
+ALPHA = ALPHA_INIT
 
-MUT_PROB = 0.3
+MUT_PROB = 0.1
 MUT_SH = 0.04

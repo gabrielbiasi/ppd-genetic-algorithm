@@ -13,14 +13,19 @@ def new_individual():
         ind.append(str(random.randint(0,1)))
     return ind
 
+def to_vector(li):
+    v = []
+    v.append(util.to_int(li[:10]))
+    v.append(util.to_int(li[10:20]))
+    v.append(util.to_int(li[20:30]))
+    print v
 
 def get_fitness(li):
     v = []
 
-    v.append(util.to_int(li[:9]))
-    v.append(util.to_int(li[10:19]))
-    v.append(util.to_int(li[20:29]))
-
+    v.append(util.to_int(li[:10]))
+    v.append(util.to_int(li[10:20]))
+    v.append(util.to_int(li[20:30]))
 
     alpha = 418.982887
     fitness = 0
