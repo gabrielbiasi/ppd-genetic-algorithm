@@ -22,6 +22,6 @@ def similarity_of_individuals(ind1, ind2):
 
 def mutate_model(model):
     for i, x in enumerate(model):
-        if random.random() <  conf.MUT_POB:
+        if random.random() < conf.MUT_PROB:
             model[i] = x * (1.0 - conf.MUT_SH) + random.randint(0,1) * conf.MUT_SH
     return model
