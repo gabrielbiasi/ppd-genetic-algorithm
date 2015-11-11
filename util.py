@@ -15,7 +15,7 @@ def similarity_of_individuals(ind1, ind2):
 	hamming_distance = sum(c1 == c2 for c1, c2 in zip(ind1, ind2))
 	return float(hamming_distance) / len(ind1)
 
-def updateProbabilistModel(model, individual, alpha):
+def update_model(model, individual, alpha):
 	for i in xrange(len(model)):
 		model[i] = model[i] * (1.0 - alpha) + individual[i] * alpha
 	return model
