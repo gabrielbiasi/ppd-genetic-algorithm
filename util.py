@@ -22,11 +22,11 @@ def similarity_of_individuals(ind1, ind2):
     return float(hamming_distance) / len(ind1)
 
 
-def create_model(individual):
+def create_model(individual, med):
     model = []
     for x in individual:
         # TODO
-        model.append((0.5 - conf.ALPHA) * int(x)  + conf.ALPHA)
+        model.append((0.5 - conf.ALPHA) * int(x)  + conf.ALPHA * med)
         #model.append(0.5)
     return model
 

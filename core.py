@@ -14,11 +14,18 @@ def run(problem):
 
     models = []
     last_generated = pop[0]
-    models.append(util.create_model(last_generated))
+
+    aux = []
+    for i in pop:
+        aux.append(math.fabs(problem.get_fitness(i)))
+    aux = sorted(aux)
+    med = sum(aux[:(len(aux) / 2)]) / (len(aux) / 2)
+
+    models.append(util.create_model(last_generated, med))
 
     for x in xrange(1, population_size):
         if util.similarity_of_individuals(pop[x], last_generated) <= 0.25:
-            models.append(util.create_model(last_generated))
+            models.append(util.create_model(pop[x], med))
             last_generated = pop[x]
 
     aux = []

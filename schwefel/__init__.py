@@ -32,6 +32,3 @@ def get_fitness(li):
 def is_finished(individual):
     f = get_fitness(individual)
     return f <= FITNESS and f >= -FITNESS
-
-
-
