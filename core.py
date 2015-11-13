@@ -9,13 +9,8 @@ def run(problem):
 
     ### MASTER ###
 
-    # Setting the size of population
-    # To dedide what we will use
-    population_size = (problem.NUM_BITS ** 2) / 2
-
     pop = util.new_population(problem)
-
-    print problem.get_fitness(pop[0])
+    population_size = len(pop)
 
     models = []
     last_generated = pop[0]
@@ -31,43 +26,44 @@ def run(problem):
         aux.append(list(x))
 
     #### SLAVE ###
-
-    population_size = (problem.NUM_BITS ** 2) / 2
     print population_size
     print len(models)
 
+    print '[',
+    for x in models[0]:
+        print '%.2f' % x,
+    print ']'
     # Generating the new population for each probabilist model #
     oi = 1
+    last = problem.get_fitness(last_generated)
     while True:
+    #while oi < 1000:
+        print '------init------'
         populations = []
-        for i in xrange(len(models)):
-            pop = []
-            for x in xrange(population_size):
-                pop.append(problem.new_individual())
-            populations.append(pop)
+        for model_id in xrange(len(models)):
+            populations.append(util.new_population(problem))
 
         # The magic #
         for model_id in xrange(len(models)):
             for model_item_id in xrange(len(models[model_id])):
                 for bit_id in xrange(len(populations[model_id][model_item_id])):
-                    condition = random.random() < models[model_id][model_item_id]
-                    populations[model_id][model_item_id][bit_id] = '1' if condition else '0'
-
+                    if random.random() < models[model_id][model_item_id]:
+                        populations[model_id][model_item_id][bit_id] = '1'
+                    else:
+                        populations[model_id][model_item_id][bit_id] = '0'
 
         # Calculate the best individual of each probabilist model #
         bests = [None] * len(models)
         for model_id in xrange(len(models)):
             bests[model_id] = populations[model_id][0]
             for model_item_id in xrange(1, len(models[model_id])):
+                print math.fabs(problem.get_fitness(bests[model_id]))
                 if math.fabs(problem.get_fitness(bests[model_id])) > math.fabs(problem.get_fitness(populations[model_id][model_item_id])):
                     bests[model_id] = populations[model_id][model_item_id]
-
 
         # Calculate the bestest #
         b = bests[0]
         for best in bests:
-            print best
-            print problem.get_fitness(best)
             if math.fabs(problem.get_fitness(b)) > math.fabs(problem.get_fitness(best)):
                 b = best
 
@@ -90,7 +86,23 @@ def run(problem):
         for model in models:
             util.mutate_model(model)
 
-        print 'melhor: ', problem.get_fitness(b)
+        # Learing model
+        new = math.fabs(problem.get_fitness(b))
+        util.learning(last, new)
+        last = new
+
+        print '[',
+        for x in models[0]:
+            print '%.2f' % x,
+        print ']'
+
+        v = []
+        v.append(util.to_int(b[:10]))
+        v.append(util.to_int(b[10:20]))
+        v.append(util.to_int(b[20:30]))
+        print b
+        print v, '\t\t',problem.get_fitness(b), conf.ALPHA
+        print '------end------'
         oi += 1
 
 

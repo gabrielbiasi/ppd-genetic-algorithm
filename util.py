@@ -9,7 +9,9 @@ def to_bin(number):
 
 
 def to_int(binary):
-    return int(''.join(binary), 2)
+    signal = -1 if binary[0] == '1' else 1
+    number = int(''.join(binary[1:]), 2)
+    return signal*number
 
 
 def similarity_of_individuals(ind1, ind2):
@@ -25,6 +27,7 @@ def create_model(individual):
     for x in individual:
         # TODO
         model.append((0.5 - conf.ALPHA) * int(x)  + conf.ALPHA)
+        #model.append(0.5)
     return model
 
 def update_model(model, individual):
@@ -37,14 +40,15 @@ def mutate_model(model):
         if random.random() < conf.MUT_PROB:
             model[i] = x * (1.0 - conf.MUT_SH) + random.randint(0,1) * conf.MUT_SH
 
-def learning(q):
-    if q > 0:
-        conf.ALPHA = conf.ALPHA * (1 + q)
+def learning(previous, new):
+    if new < previous:
+        conf.ALPHA = conf.ALPHA * (1 + conf.Q)
     else:
         conf.ALPHA = conf.ALPHA_INIT
 
 def new_population(problem):
-    population_size = (problem.NUM_BITS ** 2) / 2
+    #population_size = (2 ** (problem.NUM_BITS / 2)) / 2
+    population_size = problem.NUM_BITS ** 3
     pop = []
     for x in xrange(population_size):
         pop.append(problem.new_individual())

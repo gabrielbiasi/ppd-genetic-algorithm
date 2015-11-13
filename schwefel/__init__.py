@@ -7,18 +7,13 @@ This file have anything about we need to test the schwefel's function.
 FITNESS = 0.1
 NUM_BITS = 30
 
+# 10 bits to each number: 1 bit = signal and 9 bits = number
+
 def new_individual():
     ind = []
     for x in xrange(NUM_BITS):
         ind.append(str(random.randint(0,1)))
     return ind
-
-def to_vector(li):
-    v = []
-    v.append(util.to_int(li[:10]))
-    v.append(util.to_int(li[10:20]))
-    v.append(util.to_int(li[20:30]))
-    print v
 
 def get_fitness(li):
     v = []
