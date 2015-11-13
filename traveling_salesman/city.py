@@ -22,11 +22,15 @@ class City:
         return '(%d, %d)' % (int(self._x), int(self._y))
 
 
-    def getX(self):
+    def get_id(self):
+        return self._id
+
+
+    def get_x(self):
         return self._x
 
 
-    def getY(self):
+    def get_y(self):
         return self._y
 
 
