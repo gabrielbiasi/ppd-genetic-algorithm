@@ -1,15 +1,34 @@
-import math 
+import math, random, util
 """
 Schwefel's function
 This file have anything about we need to test the schwefel's function.
 """
 
-def get_fitness(chromosome):
-	# TODO
-	# for while accepting only integer numbers
-	
-	alpha = 418.982887
-	fitness = 0
-	for i in range(len(chromosome)):
-		fitness -= chromosome[i]*math.sin(math.sqrt(math.fabs(chromosome[i])))
-	return float(fitness) + alpha*len(chromosome)
+FITNESS = 0.1
+NUM_BITS = 30
+
+# 10 bits to each number: 1 bit = signal and 9 bits = number
+
+def new_individual():
+    ind = []
+    for x in xrange(NUM_BITS):
+        ind.append(str(random.randint(0,1)))
+    return ind
+
+def get_fitness(li):
+    v = []
+
+    v.append(util.to_int(li[:10]))
+    v.append(util.to_int(li[10:20]))
+    v.append(util.to_int(li[20:30]))
+
+    alpha = 418.982887
+    fitness = 0
+    for i in range(len(v)):
+        fitness -= v[i]*math.sin(math.sqrt(math.fabs(v[i])))
+    return float(fitness) + alpha*len(v)
+
+
+def is_finished(individual):
+    f = get_fitness(individual)
+    return f <= FITNESS and f >= -FITNESS
