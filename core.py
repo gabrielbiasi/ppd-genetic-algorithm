@@ -4,6 +4,7 @@ Core Algorithm
 
 import conf, util, random, math
 import schwefel
+import rastrigin
 
 def run(problem):
 
@@ -120,5 +121,5 @@ def run(problem):
 
 if __name__ == '__main__':
     print 'INIT'
-    run(schwefel)
+    run(rastrigin)
     print 'END'

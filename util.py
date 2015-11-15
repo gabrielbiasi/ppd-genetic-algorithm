@@ -48,7 +48,7 @@ def learning(previous, new):
 
 def new_population(problem):
     #population_size = (2 ** (problem.NUM_BITS / 2)) / 2
-    population_size = problem.NUM_BITS ** 3
+    population_size = problem.number_bits() ** 3
     pop = []
     for x in xrange(population_size):
         pop.append(problem.new_individual())
