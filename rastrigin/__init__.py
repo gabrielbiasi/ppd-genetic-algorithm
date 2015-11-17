@@ -29,7 +29,7 @@ def get_fitness(individual):
     v = []
     for i in xrange(AMOUNT_NUM):
         number = int(''.join(individual[i*NUM_BITS_IN_NUM:(i+1)*NUM_BITS_IN_NUM]), 2)##----
-        v.append((number - 512))##---
+        v.append((number - 512)/100.0)##---
 
     alpha = 10
     fitness = 0
