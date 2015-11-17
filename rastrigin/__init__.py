@@ -1,18 +1,20 @@
 import math, random, util
 """
-Schwefel's function
-This file have anything about we need to test the schwefel's function.
+Rastigin function
+
 """
 
-LIMIT_VALUE = 1000
-FITNESS = 0.1
+LIMIT_VALUE = 512
+FITNESS = 0
 NUM_BITS_IN_NUM = 10
 AMOUNT_NUM = 3
 
-
 # 10 bits to each number: 1 bit = signal and 9 bits = number
 
-def new_individual(data=None):
+#sign bit = 1 --> positive
+#sign bit = 0 --> negative
+
+def new_individual():
     ind = []
     loop = False
     while not loop:
@@ -20,19 +22,22 @@ def new_individual(data=None):
         for x in xrange(NUM_BITS_IN_NUM*AMOUNT_NUM):
             ind.append(str(random.randint(0,1)))
         loop = valide_individual(ind)
-    return ind, data
+    return ind
 
 def get_fitness(individual):
     v = []
     for i in xrange(AMOUNT_NUM):
-        number = int(''.join(individual[i*NUM_BITS_IN_NUM:(i+1)*NUM_BITS_IN_NUM]), 2)
-        v.append(number - 500)
+        id_sign = i*NUM_BITS_IN_NUM
+        number = int(''.join(individual[id_sign+1:(i+1)*NUM_BITS_IN_NUM]), 2)
+        if individual[id_sign] == "1":
+            v.append(-number/100)
+        else:
+            v.append(number/100)
 
-    alpha = 418.982887
+    alpha = 10
     fitness = 0
     for i in range(AMOUNT_NUM):
-        fitness -= v[i]*math.sin(math.sqrt(math.fabs(v[i])))
-    # print "fitness :", float(fitness) + alpha*AMOUNT_NUM
+        fitness += v[i]**2 - alpha*math.cos(2*math.pi*v[i])
     return float(fitness) + alpha*AMOUNT_NUM
 
 
@@ -46,20 +51,22 @@ def valide_individual(individual):
     validation of an individual to find out if it is part of the domain
     '''
     for i in xrange(AMOUNT_NUM):
-        number = int(''.join(individual[i*NUM_BITS_IN_NUM:(i+1)*NUM_BITS_IN_NUM]), 2)
-        if LIMIT_VALUE < number:
+        number = int(''.join(individual[(i*NUM_BITS_IN_NUM)+1:(i+1)*NUM_BITS_IN_NUM]), 2)
+        if LIMIT_VALUE < math.fabs(number):
             return False
+
     return True
 
 def num_bits():
     return NUM_BITS_IN_NUM * AMOUNT_NUM
 
-
 def show(individual):
     string = "[ "
     for i in xrange(AMOUNT_NUM):
-        number = int(''.join(individual[i*NUM_BITS_IN_NUM:(i+1)*NUM_BITS_IN_NUM]), 2)
-        string += str(number - 500)
+        id_sign = i*NUM_BITS_IN_NUM
+        sign = "-" if individual[id_sign] == "1" else ""
+        number = int(''.join(individual[id_sign+1:(i+1)*NUM_BITS_IN_NUM]), 2)
+        string += sign+str(number)
         string += ", " if i+1 < AMOUNT_NUM else " "
 
-    return string+"]"
+    print string+"]"
