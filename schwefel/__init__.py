@@ -31,7 +31,7 @@ def get_fitness(individual):
     alpha = 418.982887
     fitness = 0
     for i in range(AMOUNT_NUM):
-        fitness -= v[i]*math.sin(math.sqrt(math.fabs(v[i])))
+        fitness -= float(v[i]*math.sin(math.sqrt(math.fabs(v[i]))))
     # print "fitness :", float(fitness) + alpha*AMOUNT_NUM
     return float(fitness) + alpha*AMOUNT_NUM
 

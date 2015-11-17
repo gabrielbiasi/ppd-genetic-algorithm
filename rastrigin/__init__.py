@@ -8,6 +8,7 @@ LIMIT_VALUE = 1024##----
 FITNESS = 0
 NUM_BITS_IN_NUM = 10
 AMOUNT_NUM = 3
+DATA = None
 
 # 10 bits to each number: 1 bit = signal and 9 bits = number
 
@@ -64,3 +65,9 @@ def show(individual):
         string += ", " if i+1 < AMOUNT_NUM else " "
 
     print string+"]"
+
+def set_data(data):
+    DATA = data
+
+def get_data():
+    return data
