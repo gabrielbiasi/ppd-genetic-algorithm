@@ -4,7 +4,7 @@ Rastigin function
 
 """
 
-LIMIT_VALUE = 512
+LIMIT_VALUE = 1024##----
 FITNESS = 0
 NUM_BITS_IN_NUM = 10
 AMOUNT_NUM = 3
@@ -27,12 +27,8 @@ def new_individual():
 def get_fitness(individual):
     v = []
     for i in xrange(AMOUNT_NUM):
-        id_sign = i*NUM_BITS_IN_NUM
-        number = int(''.join(individual[id_sign+1:(i+1)*NUM_BITS_IN_NUM]), 2)
-        if individual[id_sign] == "1":
-            v.append(-number/100)
-        else:
-            v.append(number/100)
+        number = int(''.join(individual[i*NUM_BITS_IN_NUM:(i+1)*NUM_BITS_IN_NUM]), 2)##----
+        v.append((number - 512))##---
 
     alpha = 10
     fitness = 0
@@ -51,7 +47,7 @@ def valide_individual(individual):
     validation of an individual to find out if it is part of the domain
     '''
     for i in xrange(AMOUNT_NUM):
-        number = int(''.join(individual[(i*NUM_BITS_IN_NUM)+1:(i+1)*NUM_BITS_IN_NUM]), 2)
+        number = int(''.join(individual[i*NUM_BITS_IN_NUM:(i+1)*NUM_BITS_IN_NUM]), 2)###---
         if LIMIT_VALUE < math.fabs(number):
             return False
 
@@ -63,10 +59,8 @@ def num_bits():
 def show(individual):
     string = "[ "
     for i in xrange(AMOUNT_NUM):
-        id_sign = i*NUM_BITS_IN_NUM
-        sign = "-" if individual[id_sign] == "1" else ""
-        number = int(''.join(individual[id_sign+1:(i+1)*NUM_BITS_IN_NUM]), 2)
-        string += sign+str(number)
+        number = int(''.join(individual[i*NUM_BITS_IN_NUM:(i+1)*NUM_BITS_IN_NUM]), 2)
+        string += str(number - 512)
         string += ", " if i+1 < AMOUNT_NUM else " "
 
     print string+"]"
