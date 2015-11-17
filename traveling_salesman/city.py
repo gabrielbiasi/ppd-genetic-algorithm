@@ -7,31 +7,17 @@ class City:
     _x = None
     _y = None
 
-    def __init__(self, id, x=None, y=None):
+
+    def __init__(self, _id, _x=None, _y=None):
         random.seed()
-        self._id = id
-        self._x = x
-        self._y = y
-        if not x:
-            self._x = random.random() * 200
-        if not y:
-            self._y = random.random() * 200
+
+        self._id = _id
+        self._x = _x if _x else random.random() * 200
+        self._y = _y if _y else random.random() * 200
 
 
     def __str__(self):
         return '(%d, %d)' % (int(self._x), int(self._y))
-
-
-    def get_id(self):
-        return self._id
-
-
-    def get_x(self):
-        return self._x
-
-
-    def get_y(self):
-        return self._y
 
 
     def distance_to(self, city):

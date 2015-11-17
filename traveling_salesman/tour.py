@@ -1,28 +1,30 @@
-import random
+import util
 
 class Tour:
-    _distance = 0
-    _fitness = 0
     _tour = []
 
 
-    def generate_tour(self, cities_list):
+    def set_tour(self, cities_list):
         self._tour = list(cities_list)
-        random.shuffle(self._tour)
 
 
     def get_tour(self):
-        return self._tour
-
-
-    def get_biggest_id(self):
-        biggest = self._tour[0].get_id()
+        list_tour = []
         for city in self._tour:
-            if city.get_id() > biggest:
-                biggest = city.get_id()
-
-        return biggest
+            list_tour.append(city.__dict__)
+        return list_tour
 
 
-    def get_fitness(self):
-        return self._fitness
+    def get_binary_tour(self, origin, step):
+        i = origin
+        binary = []
+        while True:
+            current = self._tour[i - 1]._id
+            binary += util.to_bin(current)
+            i += step
+            if i > len(self._tour):
+                i -= len(self._tour)
+                i -= 1
+            if i == origin:
+                break
+        return binary

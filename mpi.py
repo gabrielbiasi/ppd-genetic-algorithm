@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from mpi4py import MPI
 import math
 
@@ -6,13 +8,14 @@ from master import generate_models
 from slave  import generate_populations, magic, get_bests, get_bestest
 
 import schwefel
+from traveling_salesman import TravelingSalesman
 
 comm = MPI.COMM_WORLD
 
 size = comm.Get_size()
 rank = comm.Get_rank()
 
-problem = schwefel
+problem = TravelingSalesman()
 
 if size != 3:
     raise Exception('The algorithm needs 4 workers.')
@@ -26,28 +29,28 @@ if rank == 0:
 
     ## 25% ##
     print '[MASTER] Sending to 25-work... '
-    comm.send(generate_models(pop, 0.25), dest=1, tag=0)
+    comm.send({'models': generate_models(pop, 0.25), 'data': problem.get_data()}, dest=1, tag=0)
 
     ## 50% ##
     print '[MASTER] Sending to 50-work... '
-    comm.send(generate_models(pop, 0.50), dest=2, tag=0)
+    comm.send({'models': generate_models(pop, 0.50), 'data': problem.get_data()}, dest=2, tag=0)
 
     ## 75% ##
     #print '[MASTER] Sending to 75-work... '
-    #comm.send(generate_models(pop, 0.75), dest=3, tag=0)
+    #comm.send({'models': generate_models(pop, 0.75), 'data': problem.get_data()}, dest=3, tag=0)
 
     ## 100% ##
     #print '[MASTER] Sending to 100-work... '
-    #comm.send(generate_models(pop, 1.00), dest=4, tag=0)
+    #comm.send({'models': generate_models(pop, 1.00), 'data': problem.get_data()}, dest=4, tag=0)
 
     print '[MASTER] Waiting... '
 
     v = []
-    data = None
-    ind1 = comm.recv(data, source=1, tag=1)
-    ind2 = comm.recv(data, source=2, tag=2)
-    #ind3 = comm.recv(data, source=3, tag=3)
-    #ind4 = comm.recv(data, source=4, tag=4)
+    core_data = None
+    ind1 = comm.recv(core_data, source=1, tag=1)
+    ind2 = comm.recv(core_data, source=2, tag=2)
+    #ind3 = comm.recv(core_data, source=3, tag=3)
+    #ind4 = comm.recv(core_data, source=4, tag=4)
 
     print '0.25> ', ind1, problem.get_fitness(ind1)
     print '0.50> ', ind2, problem.get_fitness(ind2)
@@ -57,7 +60,9 @@ if rank == 0:
 
 else:
     ## SLAVE ##
-    models = comm.recv(source=0, tag=0)
+    recv_data = comm.recv(source=0, tag=0)
+    models = recv_data['models']
+    problem.set_data(recv_data['data'])
     print '[', str(rank), '] received.'
 
     last = 999
@@ -80,7 +85,7 @@ else:
         for model in models:
             util.mutate_model(model)
 
-        # Learing model
+        # Learning model
         new = math.fabs(problem.get_fitness(b))
         util.learning(last, new)
         last = new
@@ -89,5 +94,4 @@ else:
 
 
     print '[', rank, '] finished. Sending... ',
-    comm.send(data, dest=0, tag=rank)
-
+    comm.send(core_data, dest=0, tag=rank)
