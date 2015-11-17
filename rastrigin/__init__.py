@@ -5,7 +5,7 @@ Rastigin function
 """
 
 LIMIT_VALUE = 512
-FITNESS = 0.00000000
+FITNESS = 0
 NUM_BITS_IN_NUM = 10
 AMOUNT_NUM = 3
 
@@ -16,8 +16,8 @@ AMOUNT_NUM = 3
 
 def new_individual():
     ind = []
-    loop = True
-    while loop:
+    loop = False
+    while not loop:
         ind = []
         for x in xrange(NUM_BITS_IN_NUM*AMOUNT_NUM):
             ind.append(str(random.randint(0,1)))
@@ -52,10 +52,10 @@ def valide_individual(individual):
     '''
     for i in xrange(AMOUNT_NUM):
         number = int(''.join(individual[(i*NUM_BITS_IN_NUM)+1:(i+1)*NUM_BITS_IN_NUM]), 2)
-        if LIMIT_VALUE <= math.fabs(number):
-            return True
+        if LIMIT_VALUE < math.fabs(number):
+            return False
 
-    return False
+    return True
 
 def num_bits():
     return NUM_BITS_IN_NUM * AMOUNT_NUM

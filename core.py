@@ -55,8 +55,8 @@ def run(problem):
         # The magic #
         for model_id in xrange(len(models)):
             for model_item_id in xrange(len(models[model_id])):
-                loop = True
-                while loop:
+                loop = False
+                while not loop:
                     for bit_id in xrange(len(populations[model_id][model_item_id])):
                         if random.random() < models[model_id][model_item_id]:
                             populations[model_id][model_item_id][bit_id] = '1'
