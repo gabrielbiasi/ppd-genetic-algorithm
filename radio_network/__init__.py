@@ -3,9 +3,9 @@ import math, random, util
 Radio network optimization module 
 """
 
-MAX_PERCENTAGE = 78
-
-
+PRECISION_COORD = 1
+X = 1 
+Y = 3
 DATA = None
 
 # 10 bits to each number: 1 bit = signal and 9 bits = number
@@ -14,6 +14,23 @@ DATA = None
 #sign bit = 0 --> negative
 
 
+def monitor_coords(y,x):
+    # for i in y*2:
+    pass
+
+
+
+
+def id_in_coords(id):
+    
+    l = X * 2 + 1
+    c = Y * 2 + 1
+    x = id % c 
+    y = int(id/c)
+    coord_x = x - int(c/2)
+    coord_y = int(l/2) - y 
+    print x , y
+    print coord_x, coord_y
 
 
 
@@ -50,9 +67,6 @@ DATA = None
 
 
 
-
-def create_num_radio_base_station(area):
-    area_to_RBS = area/
 
 def new_individual():
     ind = []
