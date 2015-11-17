@@ -12,7 +12,7 @@ AMOUNT_NUM = 3
 
 # 10 bits to each number: 1 bit = signal and 9 bits = number
 
-def new_individual():
+def new_individual(data=None):
     ind = []
     loop = False
     while not loop:
@@ -20,7 +20,7 @@ def new_individual():
         for x in xrange(NUM_BITS_IN_NUM*AMOUNT_NUM):
             ind.append(str(random.randint(0,1)))
         loop = valide_individual(ind)
-    return ind
+    return ind, data
 
 def get_fitness(individual):
     v = []

@@ -5,7 +5,8 @@ import util
 def generate_populations(problem, size):
     populations = []
     for model_id in xrange(size):
-        populations.append(util.new_population(problem))
+        pop = util.new_population(problem)
+        populations.append(pop)
     return populations
 
 
@@ -38,5 +39,3 @@ def get_bestest(bests, problem):
         if problem.get_fitness(best) < problem.get_fitness(b):
             b = best
     return b
-
-
