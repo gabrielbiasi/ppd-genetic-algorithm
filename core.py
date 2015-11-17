@@ -6,6 +6,18 @@ import conf, util, random, math
 import schwefel
 import rastrigin
 
+def generate_models(pop, porcentage=0.25):
+    models = []
+    last_generated = pop[0]
+
+    models.append(util.create_model(last_generated))
+    for x in xrange(1, len(pop)):
+        if util.similarity_of_individuals(pop[x], last_generated) <= porcentage:
+            models.append(util.create_model(pop[x]))
+            last_generated = pop[x]
+
+    return models
+
 def run(problem):
 
     ### MASTER ###
@@ -14,14 +26,6 @@ def run(problem):
     population_size = len(pop)
 
     models = []
-    last_generated = pop[0]
-
-    med = 1
-    models.append(util.create_model(last_generated, med))
-    for x in xrange(1, population_size):
-        if util.similarity_of_individuals(pop[x], last_generated) <= 0.25:
-            models.append(util.create_model(pop[x], med))
-            last_generated = pop[x]
 
     aux = []
     for x in models:

@@ -62,4 +62,4 @@ def show(individual):
         string += str(number - 500)
         string += ", " if i+1 < AMOUNT_NUM else " "
 
-    print string+"]"
+    return string+"]"
