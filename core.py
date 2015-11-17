@@ -16,12 +16,7 @@ def run(problem):
     models = []
     last_generated = pop[0]
 
-    aux = []
-    for i in pop:
-        aux.append(math.fabs(problem.get_fitness(i)))
-    aux = sorted(aux)
-    med = (sum(aux[:(len(aux) / 2)]) / (len(aux) / 2))
-    print "media:",med
+    med = 1
     models.append(util.create_model(last_generated, med))
     for x in xrange(1, population_size):
         if util.similarity_of_individuals(pop[x], last_generated) <= 0.25:
@@ -76,7 +71,7 @@ def run(problem):
         # Calculate the bestest #
         b = bests[0]
         for best in bests:
-            if math.fabs(problem.get_fitness(b)) > math.fabs(problem.get_fitness(best)):
+            if problem.get_fitness(b) > problem.get_fitness(best):
                 b = best
 
         # B is the best #
@@ -104,12 +99,9 @@ def run(problem):
             print '%.2f' % x,
         print ']'
 
-        v = []
-        v.append(util.to_int(b[:10]))
-        v.append(util.to_int(b[10:20]))
-        v.append(util.to_int(b[20:30]))
+        print "coordenadas: ", problem.show(b)
         print b
-        print v, '\t\t',problem.get_fitness(b), conf.ALPHA
+        print "melhor fitness: ", problem.get_fitness(b)," Alfa: ", conf.ALPHA
         print '------end------'
         oi += 1
 
@@ -121,5 +113,5 @@ def run(problem):
 
 if __name__ == '__main__':
     print 'INIT'
-    run(rastrigin)
+    run(schwefel)
     print 'END'

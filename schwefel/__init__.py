@@ -4,29 +4,36 @@ Schwefel's function
 This file have anything about we need to test the schwefel's function.
 """
 
+LIMIT_VALUE = 1001
 FITNESS = 0.1
-NUM_BITS = 30
+NUM_BITS_IN_NUM = 11
+AMOUNT_NUM = 3
+
 
 # 10 bits to each number: 1 bit = signal and 9 bits = number
 
 def new_individual():
     ind = []
-    for x in xrange(NUM_BITS):
-        ind.append(str(random.randint(0,1)))
+    loop = False
+    while not loop:
+        ind = []
+        for x in xrange(NUM_BITS_IN_NUM*AMOUNT_NUM):
+            ind.append(str(random.randint(0,1)))
+        loop = valide_individual(ind)
     return ind
 
-def get_fitness(li):
+def get_fitness(individual):
     v = []
-
-    v.append(util.to_int(li[:10]))
-    v.append(util.to_int(li[10:20]))
-    v.append(util.to_int(li[20:30]))
+    for i in xrange(AMOUNT_NUM):
+        number = int(''.join(individual[i*NUM_BITS_IN_NUM:(i+1)*NUM_BITS_IN_NUM]), 2)
+        v.append(number - 500)
 
     alpha = 418.982887
     fitness = 0
-    for i in range(len(v)):
+    for i in range(AMOUNT_NUM):
         fitness -= v[i]*math.sin(math.sqrt(math.fabs(v[i])))
-    return float(fitness) + alpha*len(v)
+    print "fitness :", float(fitness) + alpha*AMOUNT_NUM
+    return float(fitness) + alpha*AMOUNT_NUM
 
 
 def is_finished(individual):
@@ -35,7 +42,24 @@ def is_finished(individual):
 
 
 def valide_individual(individual):
+    '''
+    validation of an individual to find out if it is part of the domain
+    '''
+    for i in xrange(AMOUNT_NUM):
+        number = int(''.join(individual[i*NUM_BITS_IN_NUM:(i+1)*NUM_BITS_IN_NUM]), 2)
+        if LIMIT_VALUE < number:
+            return False
     return True
 
 def num_bits():
-    return NUM_BITS
+    return NUM_BITS_IN_NUM * AMOUNT_NUM
+
+
+def show(individual):
+    string = "[ "
+    for i in xrange(AMOUNT_NUM):
+        number = int(''.join(individual[i*NUM_BITS_IN_NUM:(i+1)*NUM_BITS_IN_NUM]), 2)
+        string += str(number - 500)
+        string += ", " if i+1 < AMOUNT_NUM else " "
+
+    print string+"]"
