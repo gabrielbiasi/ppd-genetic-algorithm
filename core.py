@@ -57,7 +57,7 @@ def run(problem):
                             populations[model_id][model_item_id][bit_id] = '1'
                         else:
                             populations[model_id][model_item_id][bit_id] = '0'
-                    loop = problem.valide_individual(populations[model_id][model_item_id])
+                    loop = problem.validate_individual(populations[model_id][model_item_id])
 
 
         # Calculate the best individual of each probabilist model #

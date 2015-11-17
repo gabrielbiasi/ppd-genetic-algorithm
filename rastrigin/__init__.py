@@ -22,7 +22,7 @@ def new_individual():
         ind = []
         for x in xrange(NUM_BITS_IN_NUM*AMOUNT_NUM):
             ind.append(str(random.randint(0,1)))
-        loop = valide_individual(ind)
+        loop = validate_individual(ind)
     return ind
 
 def get_fitness(individual):
@@ -43,7 +43,7 @@ def is_finished(individual):
     return f <= FITNESS and f >= -FITNESS
 
 
-def valide_individual(individual):
+def validate_individual(individual):
     '''
     validation of an individual to find out if it is part of the domain
     '''
