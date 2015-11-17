@@ -32,3 +32,10 @@ def get_fitness(li):
 def is_finished(individual):
     f = get_fitness(individual)
     return f <= FITNESS and f >= -FITNESS
+
+
+def valide_individual(individual):
+    return True
+
+def num_bits():
+    return NUM_BITS

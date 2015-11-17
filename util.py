@@ -25,9 +25,7 @@ def similarity_of_individuals(ind1, ind2):
 def create_model(individual, med):
     model = []
     for x in individual:
-        # TODO
         model.append((0.5 - conf.ALPHA) * int(x)  + conf.ALPHA * med)
-        #model.append(0.5)
     return model
 
 def update_model(model, individual):
@@ -48,7 +46,8 @@ def learning(previous, new):
 
 def new_population(problem):
     #population_size = (2 ** (problem.NUM_BITS / 2)) / 2
-    population_size = problem.number_bits() ** 3
+    population_size = problem.num_bits()
+    # population_size = problem.num_bits() ** 3
     pop = []
     for x in xrange(population_size):
         pop.append(problem.new_individual())

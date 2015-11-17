@@ -20,10 +20,9 @@ def run(problem):
     for i in pop:
         aux.append(math.fabs(problem.get_fitness(i)))
     aux = sorted(aux)
-    med = sum(aux[:(len(aux) / 2)]) / (len(aux) / 2)
-
+    med = (sum(aux[:(len(aux) / 2)]) / (len(aux) / 2))
+    print "media:",med
     models.append(util.create_model(last_generated, med))
-
     for x in xrange(1, population_size):
         if util.similarity_of_individuals(pop[x], last_generated) <= 0.25:
             models.append(util.create_model(pop[x], med))
@@ -47,6 +46,8 @@ def run(problem):
     while True:
     #while oi < 1000:
         print '------init------'
+       
+        #TODO
         populations = []
         for model_id in xrange(len(models)):
             populations.append(util.new_population(problem))
@@ -54,18 +55,21 @@ def run(problem):
         # The magic #
         for model_id in xrange(len(models)):
             for model_item_id in xrange(len(models[model_id])):
-                for bit_id in xrange(len(populations[model_id][model_item_id])):
-                    if random.random() < models[model_id][model_item_id]:
-                        populations[model_id][model_item_id][bit_id] = '1'
-                    else:
-                        populations[model_id][model_item_id][bit_id] = '0'
+                loop = False
+                while not loop:
+                    for bit_id in xrange(len(populations[model_id][model_item_id])):
+                        if random.random() < models[model_id][model_item_id]:
+                            populations[model_id][model_item_id][bit_id] = '1'
+                        else:
+                            populations[model_id][model_item_id][bit_id] = '0'
+                    loop = problem.valide_individual(populations[model_id][model_item_id])
+
 
         # Calculate the best individual of each probabilist model #
         bests = [None] * len(models)
         for model_id in xrange(len(models)):
             bests[model_id] = populations[model_id][0]
             for model_item_id in xrange(1, len(models[model_id])):
-                print math.fabs(problem.get_fitness(bests[model_id]))
                 if math.fabs(problem.get_fitness(bests[model_id])) > math.fabs(problem.get_fitness(populations[model_id][model_item_id])):
                     bests[model_id] = populations[model_id][model_item_id]
 
