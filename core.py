@@ -55,8 +55,8 @@ def run(problem):
         # The magic #
         for model_id in xrange(len(models)):
             for model_item_id in xrange(len(models[model_id])):
-                loop = False
-                while not loop:
+                loop = True
+                while loop:
                     for bit_id in xrange(len(populations[model_id][model_item_id])):
                         if random.random() < models[model_id][model_item_id]:
                             populations[model_id][model_item_id][bit_id] = '1'
@@ -83,11 +83,7 @@ def run(problem):
         if problem.is_finished(b):
             print 'FINISHED'
             print problem.get_fitness(b)
-            v = []
-            v.append(util.to_int(b[:10]))
-            v.append(util.to_int(b[10:20]))
-            v.append(util.to_int(b[20:30]))
-            print v
+            print problem.show(b)
             return
 
         # Calculate the new probabilist models #

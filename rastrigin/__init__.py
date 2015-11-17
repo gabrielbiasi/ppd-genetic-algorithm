@@ -5,7 +5,7 @@ Rastigin function
 """
 
 LIMIT_VALUE = 512
-FITNESS = 0
+FITNESS = 0.00000000
 NUM_BITS_IN_NUM = 10
 AMOUNT_NUM = 3
 
@@ -16,8 +16,8 @@ AMOUNT_NUM = 3
 
 def new_individual():
     ind = []
-    loop = False
-    while not loop:
+    loop = True
+    while loop:
         ind = []
         for x in xrange(NUM_BITS_IN_NUM*AMOUNT_NUM):
             ind.append(str(random.randint(0,1)))
@@ -36,7 +36,7 @@ def get_fitness(individual):
 
     alpha = 10
     fitness = 0
-    for i in range(len(v)):
+    for i in range(AMOUNT_NUM):
         fitness += v[i]**2 - alpha*math.cos(2*math.pi*v[i])
     return float(fitness) + alpha*AMOUNT_NUM
 
@@ -53,9 +53,9 @@ def valide_individual(individual):
     for i in xrange(AMOUNT_NUM):
         number = int(''.join(individual[(i*NUM_BITS_IN_NUM)+1:(i+1)*NUM_BITS_IN_NUM]), 2)
         if LIMIT_VALUE <= math.fabs(number):
-            return False
+            return True
 
-    return True
+    return False
 
 def num_bits():
     return NUM_BITS_IN_NUM * AMOUNT_NUM
