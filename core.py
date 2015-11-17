@@ -70,9 +70,12 @@ def run(problem):
 
         # Calculate the bestest #
         b = bests[0]
+
         for best in bests:
             if problem.get_fitness(b) > problem.get_fitness(best):
                 b = best
+                print "id best:  ", bests.index(best)
+        print "melhor atual:", b
 
         # B is the best #
         if problem.is_finished(b):

@@ -4,9 +4,9 @@ Schwefel's function
 This file have anything about we need to test the schwefel's function.
 """
 
-LIMIT_VALUE = 1001
+LIMIT_VALUE = 1000
 FITNESS = 0.1
-NUM_BITS_IN_NUM = 11
+NUM_BITS_IN_NUM = 10
 AMOUNT_NUM = 3
 
 
@@ -32,7 +32,7 @@ def get_fitness(individual):
     fitness = 0
     for i in range(AMOUNT_NUM):
         fitness -= v[i]*math.sin(math.sqrt(math.fabs(v[i])))
-    print "fitness :", float(fitness) + alpha*AMOUNT_NUM
+    # print "fitness :", float(fitness) + alpha*AMOUNT_NUM
     return float(fitness) + alpha*AMOUNT_NUM
 
 
