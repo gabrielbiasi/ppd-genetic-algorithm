@@ -1,6 +1,11 @@
 """
-hello
+Config variables
 """
 
-MUT_PROB = 0.3
+ALPHA_INIT = 0.05
+ALPHA = ALPHA_INIT
+
+Q = 0.03
+
+MUT_PROB = 0.1
 MUT_SH = 0.04
