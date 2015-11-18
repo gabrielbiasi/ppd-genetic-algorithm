@@ -7,7 +7,7 @@ import conf, util
 from master import generate_models
 from slave  import generate_populations, magic, get_bests, get_bestest
 
-import schwefel
+from schwefel import Schwefel
 from traveling_salesman import TravelingSalesman
 
 comm = MPI.COMM_WORLD
@@ -15,7 +15,7 @@ comm = MPI.COMM_WORLD
 size = comm.Get_size()
 rank = comm.Get_rank()
 
-problem = TravelingSalesman()
+problem = Schwefel()
 
 if size != 3:
     raise Exception('The algorithm needs 4 workers.')
@@ -46,9 +46,8 @@ if rank == 0:
     print '[MASTER] Waiting... '
 
     v = []
-    core_data = None
-    ind1 = comm.recv(core_data, source=1, tag=1)
-    ind2 = comm.recv(core_data, source=2, tag=2)
+    ind1 = comm.recv(source=1, tag=1)
+    ind2 = comm.recv(source=2, tag=2)
     #ind3 = comm.recv(core_data, source=3, tag=3)
     #ind4 = comm.recv(core_data, source=4, tag=4)
 
