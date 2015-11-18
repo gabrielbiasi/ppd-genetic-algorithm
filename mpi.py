@@ -58,19 +58,19 @@ if rank == 0:
 
     ## 25% ##
     print '[MASTER] Sending to 25-work... '
-    comm.send({'models': generate_models(pop, 0.25), 'data': problem.get_data()}, dest=1, tag=0)
+    comm.send({'problem': problem, 'models': generate_models(pop, 0.25), 'data': problem.get_data()}, dest=1, tag=0)
 
     ## 50% ##
     print '[MASTER] Sending to 50-work... '
-    comm.send({'models': generate_models(pop, 0.50), 'data': problem.get_data()}, dest=2, tag=0)
+    comm.send({'problem': problem, 'models': generate_models(pop, 0.50), 'data': problem.get_data()}, dest=2, tag=0)
 
     ## 75% ##
     #print '[MASTER] Sending to 75-work... '
-    #comm.send({'models': generate_models(pop, 0.75), 'data': problem.get_data()}, dest=3, tag=0)
+    #comm.send({'problem': problem, 'models': generate_models(pop, 0.75), 'data': problem.get_data()}, dest=3, tag=0)
 
     ## 100% ##
     #print '[MASTER] Sending to 100-work... '
-    #comm.send({'models': generate_models(pop, 1.00), 'data': problem.get_data()}, dest=4, tag=0)
+    #comm.send({'problem': problem, 'models': generate_models(pop, 1.00), 'data': problem.get_data()}, dest=4, tag=0)
 
     print '[MASTER] Waiting... '
 
@@ -90,6 +90,7 @@ if rank == 0:
 else:
     ## SLAVE ##
     recv_data = comm.recv(source=0, tag=0)
+    problem = recv_data['problem']
     models = recv_data['models']
     problem.set_data(recv_data['data'])
     print '[', str(rank), '] received.'
