@@ -2,6 +2,7 @@
 
 from mpi4py import MPI
 import math
+import sys
 
 import conf, util
 from master import generate_models
@@ -15,14 +16,42 @@ comm = MPI.COMM_WORLD
 size = comm.Get_size()
 rank = comm.Get_rank()
 
-problem = Schwefel()
-
 if size != 3:
     raise Exception('The algorithm needs 2 workers.')
 
 if rank == 0:
     ## MASTER ##
     print '[MASTER] Starting'
+
+    print '\nChoose the algorithm to be executed:\n'
+    print '1. Schwefel\'s Function'
+    print '2. Traveling Salesman'
+    print '3. Rastrigim Function'
+    print '4. Radio Network Optimization'
+    print '\n0. Exit\n'
+
+    while True:
+        try:
+            option = int(raw_input("Enter a option: "))
+            if option < 0 or option > 4:
+                print "Invalid option"
+            else:
+                break
+        except:
+            print "Invalid option"
+
+    if option == 1:
+        problem = Schwefel()
+    elif option == 2:
+        problem = TravelingSalesman()
+    elif option == 3:
+        print "Rastrigim not implemented"
+        sys.exit(0)
+    elif option == 4:
+        print "Radio not implemented"
+        sys.exit(0)
+    else:
+        sys.exit(0)
 
     pop = util.new_population(problem)
     population_size = len(pop)
