@@ -45,7 +45,7 @@ class Schwefel():
         '''
         for i in xrange(AMOUNT_NUM):
             number = int(''.join(individual[i*NUM_BITS_IN_NUM:(i+1)*NUM_BITS_IN_NUM]), 2)
-            if LIMIT_VALUE < number:
+            if number > LIMIT_VALUE:
                 return False
         return True
 

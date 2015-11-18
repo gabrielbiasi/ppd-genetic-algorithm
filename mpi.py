@@ -18,7 +18,7 @@ rank = comm.Get_rank()
 problem = Schwefel()
 
 if size != 3:
-    raise Exception('The algorithm needs 4 workers.')
+    raise Exception('The algorithm needs 2 workers.')
 
 if rank == 0:
     ## MASTER ##
@@ -48,13 +48,14 @@ if rank == 0:
     v = []
     ind1 = comm.recv(source=1, tag=1)
     ind2 = comm.recv(source=2, tag=2)
-    #ind3 = comm.recv(core_data, source=3, tag=3)
-    #ind4 = comm.recv(core_data, source=4, tag=4)
+    #ind3 = comm.recv(source=3, tag=3)
+    #ind4 = comm.recv(source=4, tag=4)
 
     print '0.25> ', ind1, problem.get_fitness(ind1)
     print '0.50> ', ind2, problem.get_fitness(ind2)
-    #print 'M', ind3, problem.get_fitness(ind3)
-    #print 'M', ind4, problem.get_fitness(ind4)
+    #print '0.75> ', ind3, problem.get_fitness(ind3)
+    #print '1.00> ', ind4, problem.get_fitness(ind4)
+    print 'END'
 
 
 else:
@@ -93,4 +94,4 @@ else:
 
 
     print '[', rank, '] finished. Sending... ',
-    comm.send(core_data, dest=0, tag=rank)
+    comm.send(b, dest=0, tag=rank)
