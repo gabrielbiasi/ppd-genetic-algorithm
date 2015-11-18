@@ -4,8 +4,8 @@ from city import City
 from tour import Tour
 import util
 
-NUM_BITS_IN_NUM = 10
-AMOUNT_NUM = len(bin(NUM_BITS_IN_NUM)[2:])
+NUM_BITS_IN_NUM = 8
+AMOUNT_NUM = 2
 NUM_CITIES = 100
 
 class TravelingSalesman:
@@ -15,30 +15,29 @@ class TravelingSalesman:
 
 
     def new_individual(self):
-        cities_list = []
         if not self.data:
             self.data = []
             for i in xrange(NUM_CITIES):
                 city = City(i)
-                cities_list.append(City(city))
                 self.data.append(city.__dict__)
 
-        origin = random.randint(0, NUM_BITS_IN_NUM - 1)
-        step = random.randint(0, NUM_BITS_IN_NUM - 1)
-        if NUM_BITS_IN_NUM % 2 == 0:
+        origin = random.randint(0, NUM_CITIES - 1)
+        step = random.randint(0, NUM_CITIES - 1)
+        if NUM_CITIES % 2 == 0:
             while step % 2 == 0:
-                step = random.randint(0, NUM_BITS_IN_NUM - 1)
-        cities_list = self.funcao(origin, step)
-        tour = Tour()
-        tour.set_tour(cities_list)
-        return list(bin(origin)[2:].zfill(10)) + list(bin(step)[2:].zfill(10))
+                step = random.randint(1, NUM_CITIES - 1)
+        # print 'origin', origin, '->', bin(origin)[2:].zfill(NUM_BITS_IN_NUM)
+        # print 'step', step, '->', bin(step)[2:].zfill(NUM_BITS_IN_NUM)
+        # print 'list', list(bin(origin)[2:].zfill(NUM_BITS_IN_NUM) + bin(step)[2:].zfill(NUM_BITS_IN_NUM))
+        print 'new>', origin, step
+        return list(bin(origin)[2:].zfill(NUM_BITS_IN_NUM) + bin(step)[2:].zfill(NUM_BITS_IN_NUM))
 
     def funcao(self, origin, step):
         a = []
         a.append(origin)
-        for pos in xrange(NUM_CITIES):
-            s = a[pos] + step
-            if s >= NUM_CITIES:
+        for pos in xrange(1, NUM_CITIES):
+            s = a[pos - 1] + step
+            if s > NUM_CITIES:
                 s -= NUM_CITIES
             a.append(s)
         return a
@@ -56,16 +55,17 @@ class TravelingSalesman:
 
     def get_fitness(self, individual):
         v = []
-        for i in xrange(2):
-            v.append(int(''.join(individual[i * NUM_BITS_IN_NUM:(i + 1) * NUM_BITS_IN_NUM]), 2))
-
-        print v
-        a = self.funcao(v[0], v[1])
+        origin = int(''.join(individual[0:NUM_BITS_IN_NUM]), 2)
+        step = int(''.join(individual[NUM_BITS_IN_NUM:2 * NUM_BITS_IN_NUM]), 2)
+        #func = self.funcao(origin, step)
+        print 'get>', individual
+        print 'get>', origin, step
+        import time
+        time.sleep(3)
 
         cities = []
-        for i in a:
+        for i in func:
             for j in self.data:
-                # print j._id, i
                 if j._id == i:
                     cities.append(j)
         tour_distance = 0
@@ -77,12 +77,6 @@ class TravelingSalesman:
                 destination_city = cities[0]
             tour_distance += from_city.distance_to(destination_city)
         return 1 / float(tour_distance)
-
-
-    def distance_to(self, city):
-        x_distance = abs(self.getX() - city.getX())
-        y_distance = abs(self.getY() - city.getY())
-        return math.sqrt((x_distance * x_distance) + (y_distance * y_distance))
 
 
     def validate_individual(self, item):

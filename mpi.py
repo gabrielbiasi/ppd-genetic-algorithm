@@ -17,7 +17,7 @@ rank = comm.Get_rank()
 
 problem = TravelingSalesman()
 
-if size != 3:
+if size != 2:
     raise Exception('The algorithm needs 4 workers.')
 
 if rank == 0:
@@ -32,8 +32,8 @@ if rank == 0:
     comm.send({'models': generate_models(pop, 0.25), 'data': problem.get_data()}, dest=1, tag=0)
 
     ## 50% ##
-    print '[MASTER] Sending to 50-work... '
-    comm.send({'models': generate_models(pop, 0.50), 'data': problem.get_data()}, dest=2, tag=0)
+    # print '[MASTER] Sending to 50-work... '
+    # comm.send({'models': generate_models(pop, 0.50), 'data': problem.get_data()}, dest=2, tag=0)
 
     ## 75% ##
     #print '[MASTER] Sending to 75-work... '
@@ -63,7 +63,6 @@ else:
     recv_data = comm.recv(source=0, tag=0)
     models = recv_data['models']
     problem.set_data(recv_data['data'])
-    print recv_data['data']
     print '[', str(rank), '] received.'
 
     last = 999

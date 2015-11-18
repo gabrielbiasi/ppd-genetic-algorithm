@@ -20,7 +20,15 @@ class City:
         return '(%d, %d)' % (int(self._x), int(self._y))
 
 
+    def getX(self):
+        return self._x
+
+
+    def getY(self):
+        return self._y
+
+
     def distance_to(self, city):
-        x_distance = abs(self._x - city._x)
-        y_distance = abs(self._y - city._y)
+        x_distance = abs(self.getX() - city.getX())
+        y_distance = abs(self.getY() - city.getY())
         return math.sqrt((x_distance * x_distance) + (y_distance * y_distance))
