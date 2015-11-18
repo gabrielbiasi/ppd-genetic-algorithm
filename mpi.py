@@ -63,6 +63,7 @@ else:
     recv_data = comm.recv(source=0, tag=0)
     models = recv_data['models']
     problem.set_data(recv_data['data'])
+    print recv_data['data']
     print '[', str(rank), '] received.'
 
     last = 999

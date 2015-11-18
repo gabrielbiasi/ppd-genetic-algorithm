@@ -21,6 +21,6 @@ class City:
 
 
     def distance_to(self, city):
-        x_distance = abs(self.getX() - city.getX())
-        y_distance = abs(self.getY() - city.getY())
+        x_distance = abs(self._x - city._x)
+        y_distance = abs(self._y - city._y)
         return math.sqrt((x_distance * x_distance) + (y_distance * y_distance))
