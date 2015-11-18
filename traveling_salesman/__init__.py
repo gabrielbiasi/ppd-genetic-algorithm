@@ -4,14 +4,15 @@ from city import City
 from tour import Tour
 import util
 
-NUM_BITS_IN_NUM = 8
+NUM_BITS_IN_NUM = 7
 AMOUNT_NUM = 2
-NUM_CITIES = 100
+NUM_CITIES = 2 ** NUM_BITS_IN_NUM
 
 class TravelingSalesman:
     data = None
-    best_fitness = 1000
+    best_fitness = 9999999
     count_fitness = 0
+    total_count_fitness = 10
 
 
     def new_individual(self):
@@ -26,10 +27,7 @@ class TravelingSalesman:
         if NUM_CITIES % 2 == 0:
             while step % 2 == 0:
                 step = random.randint(1, NUM_CITIES - 1)
-        # print 'origin', origin, '->', bin(origin)[2:].zfill(NUM_BITS_IN_NUM)
-        # print 'step', step, '->', bin(step)[2:].zfill(NUM_BITS_IN_NUM)
-        # print 'list', list(bin(origin)[2:].zfill(NUM_BITS_IN_NUM) + bin(step)[2:].zfill(NUM_BITS_IN_NUM))
-        print 'new>', origin, step
+
         return list(bin(origin)[2:].zfill(NUM_BITS_IN_NUM) + bin(step)[2:].zfill(NUM_BITS_IN_NUM))
 
     def funcao(self, origin, step):
@@ -57,11 +55,7 @@ class TravelingSalesman:
         v = []
         origin = int(''.join(individual[0:NUM_BITS_IN_NUM]), 2)
         step = int(''.join(individual[NUM_BITS_IN_NUM:2 * NUM_BITS_IN_NUM]), 2)
-        #func = self.funcao(origin, step)
-        print 'get>', individual
-        print 'get>', origin, step
-        import time
-        time.sleep(3)
+        func = self.funcao(origin, step)
 
         cities = []
         for i in func:
@@ -76,10 +70,12 @@ class TravelingSalesman:
             else:
                 destination_city = cities[0]
             tour_distance += from_city.distance_to(destination_city)
-        return 1 / float(tour_distance)
+        return float(tour_distance)
 
 
-    def validate_individual(self, item):
+    def validate_individual(self, individual):
+        if individual[-1] == '0':
+            individual[-1] = '1'
         return True
 
 
@@ -88,8 +84,18 @@ class TravelingSalesman:
 
 
     def is_finished(self, best):
+        f = self.get_fitness(best)
+        if f < self.best_fitness:
+            self.best_fitness = f
+            self.count_fitness = 0
+        elif f == self.best_fitness:
+            self.count_fitness += 1
+            if self.count_fitness == self.total_count_fitness:
+                return True
         return False
 
 
-    def show(self, b):
-        return 'blastoise'
+    def show(self, individual):
+        origin = int(''.join(individual[0:NUM_BITS_IN_NUM]), 2)
+        step = int(''.join(individual[NUM_BITS_IN_NUM:2 * NUM_BITS_IN_NUM]), 2)
+        return 'b'
