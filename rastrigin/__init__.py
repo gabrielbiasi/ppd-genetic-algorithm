@@ -40,15 +40,11 @@ class Rastrigin():
 
 
     def validate_individual(self, individual):
-        '''
-        validation of an individual to find out if it is part of the domain
-        '''
         for i in xrange(AMOUNT_NUM):
             number = int(''.join(individual[i*NUM_BITS_IN_NUM:(i+1)*NUM_BITS_IN_NUM]), 2)
-            if LIMIT_VALUE < math.fabs(number):
-                return False
-
-        return True
+            if math.fabs(number) > LIMIT_VALUE:
+                return False, individual
+        return True, individual
 
     def num_bits(self):
         return NUM_BITS_IN_NUM * AMOUNT_NUM

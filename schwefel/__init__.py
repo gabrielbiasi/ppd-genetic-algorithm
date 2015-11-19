@@ -40,14 +40,11 @@ class Schwefel():
 
 
     def validate_individual(self, individual):
-        '''
-        validation of an individual to find out if it is part of the domain
-        '''
         for i in xrange(AMOUNT_NUM):
             number = int(''.join(individual[i*NUM_BITS_IN_NUM:(i+1)*NUM_BITS_IN_NUM]), 2)
             if number > LIMIT_VALUE:
-                return False
-        return True
+                return False, individual
+        return True, individual
 
     def num_bits(self):
         return NUM_BITS_IN_NUM * AMOUNT_NUM
