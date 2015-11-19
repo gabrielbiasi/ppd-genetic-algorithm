@@ -9,7 +9,7 @@ from master import generate_models
 from slave  import generate_populations, magic, get_bests, get_bestest
 
 from rastrigin import Rastrigin
-from schwefel import Schwefel
+from radio_network import RadioNetwork
 from schwefel import Schwefel
 from traveling_salesman import TravelingSalesman
 
