@@ -8,6 +8,7 @@ import conf, util
 from master import generate_models
 from slave  import generate_populations, magic, get_bests, get_bestest
 
+from rastrigin import Rastrigin
 from schwefel import Schwefel
 from traveling_salesman import TravelingSalesman
 
@@ -32,7 +33,7 @@ if rank == 0:
 
     while True:
         try:
-            option = int(raw_input("Enter a option: "))
+            option = int(raw_input("Enter an option: "))
             if option < 0 or option > 4:
                 print "Invalid option"
             else:
@@ -45,8 +46,7 @@ if rank == 0:
     elif option == 2:
         problem = TravelingSalesman()
     elif option == 3:
-        print "Rastrigim not implemented"
-        sys.exit(0)
+        problem = Rastrigin()
     elif option == 4:
         print "Radio not implemented"
         sys.exit(0)
@@ -54,7 +54,6 @@ if rank == 0:
         sys.exit(0)
 
     pop = util.new_population(problem)
-    population_size = len(pop)
 
     ## 25% ##
     print '[MASTER] Sending to 25-work... '
@@ -93,8 +92,8 @@ else:
     problem = recv_data['problem']
     models = recv_data['models']
     problem.set_data(recv_data['data'])
-    print '[', str(rank), '] received.'
 
+    print '[', rank, ']', 'Models: ', len(models)
     last = 999
     while True:
         populations = generate_populations(problem, len(models))
@@ -123,5 +122,5 @@ else:
         print '[', rank, ']', problem.show(b), '\t\t', problem.get_fitness(b),'\t\t', conf.ALPHA
 
 
-    print '[', rank, '] finished. Sending... ',
+    print '[', rank, '] finished.', problem.show(b)
     comm.send(b, dest=0, tag=rank)

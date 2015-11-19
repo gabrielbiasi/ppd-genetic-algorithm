@@ -28,10 +28,10 @@ class Schwefel():
             v.append(number - 500)
 
         alpha = 418.982887
-        fitness = 0
+        fitness = 0.0
         for i in range(AMOUNT_NUM):
-            fitness -= v[i]*math.sin(math.sqrt(math.fabs(v[i])))
-        return float(fitness) + alpha*AMOUNT_NUM
+            fitness += v[i]*math.sin(math.sqrt(math.fabs(v[i])))
+        return alpha*AMOUNT_NUM - float(fitness)
 
 
     def is_finished(self, individual):

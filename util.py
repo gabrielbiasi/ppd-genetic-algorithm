@@ -45,7 +45,7 @@ def learning(previous, new):
         conf.ALPHA = conf.ALPHA_INIT
 
 def new_population(problem):
-    population_size = problem.num_bits() ** 2
+    population_size = (problem.num_bits() ** 2)
     pop = []
     for x in xrange(population_size):
         ind = problem.new_individual()
