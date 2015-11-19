@@ -98,4 +98,4 @@ class TravelingSalesman:
     def show(self, individual):
         origin = int(''.join(individual[0:NUM_BITS_IN_NUM]), 2)
         step = int(''.join(individual[NUM_BITS_IN_NUM:2 * NUM_BITS_IN_NUM]), 2)
-        return 'b'
+        return '(%d, %d)' % (origin, step)

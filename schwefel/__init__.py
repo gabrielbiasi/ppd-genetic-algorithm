@@ -12,15 +12,15 @@ AMOUNT_NUM = 3
 
 # 10 bits to each number: 1 bit = signal and 9 bits = number
 
-def new_individual(data=None):
+def new_individual():
     ind = []
     loop = False
     while not loop:
         ind = []
         for x in xrange(NUM_BITS_IN_NUM*AMOUNT_NUM):
             ind.append(str(random.randint(0,1)))
-        loop = valide_individual(ind)
-    return ind, data
+        loop = validate_individual(ind)
+    return ind
 
 def get_fitness(individual):
     v = []
@@ -41,7 +41,7 @@ def is_finished(individual):
     return f <= FITNESS and f >= -FITNESS
 
 
-def valide_individual(individual):
+def validate_individual(individual):
     '''
     validation of an individual to find out if it is part of the domain
     '''
@@ -63,3 +63,11 @@ def show(individual):
         string += ", " if i+1 < AMOUNT_NUM else " "
 
     return string+"]"
+
+
+def get_data():
+    return None
+
+
+def set_data(data):
+    return

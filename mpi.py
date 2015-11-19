@@ -17,7 +17,7 @@ rank = comm.Get_rank()
 
 problem = TravelingSalesman()
 
-if size != 2:
+if size != 3:
     raise Exception('The algorithm needs 4 workers.')
 
 if rank == 0:
@@ -32,8 +32,8 @@ if rank == 0:
     comm.send({'models': generate_models(pop, 0.25), 'data': problem.get_data()}, dest=1, tag=0)
 
     ## 50% ##
-    # print '[MASTER] Sending to 50-work... '
-    # comm.send({'models': generate_models(pop, 0.50), 'data': problem.get_data()}, dest=2, tag=0)
+    print '[MASTER] Sending to 50-work... '
+    comm.send({'models': generate_models(pop, 0.50), 'data': problem.get_data()}, dest=2, tag=0)
 
     ## 75% ##
     #print '[MASTER] Sending to 75-work... '
@@ -47,15 +47,27 @@ if rank == 0:
 
     v = []
     core_data = None
-    ind1 = comm.recv(core_data, source=1, tag=1)
-    ind2 = comm.recv(core_data, source=2, tag=2)
-    #ind3 = comm.recv(core_data, source=3, tag=3)
-    #ind4 = comm.recv(core_data, source=4, tag=4)
+    response = comm.recv(core_data, source=1, tag=1)
+    ind1, fitness1 = response['ind'], response['fitness']
+    response = comm.recv(core_data, source=2, tag=2)
+    ind2, fitness2 = response['ind'], response['fitness']
+    # response = comm.recv(core_data, source=3, tag=3)
+    # ind3, fitness3 = response['ind'], response['fitness']
+    # response = comm.recv(core_data, source=4, tag=4)
+    # ind4, fitness4 = response['ind'], response['fitness']
 
-    print '0.25> ', ind1, problem.get_fitness(ind1)
-    print '0.50> ', ind2, problem.get_fitness(ind2)
-    #print 'M', ind3, problem.get_fitness(ind3)
-    #print 'M', ind4, problem.get_fitness(ind4)
+    print '\n--- 0.25 ---'
+    print 'individual:', ''.join(ind1)
+    print 'fitness:', fitness1
+    print '\n--- 0.50 ---'
+    print 'individual:', ''.join(ind2)
+    print 'fitness:', fitness2
+    print '\n--- 0.75 ---'
+    #print 'individual', ''.join(ind3)
+    # print 'fitness', fitness3
+    print '\n--- 1.00 ---'
+    #print 'individual', ''.join(ind4)
+    # print 'fitness', fitness4
 
 
 else:
@@ -75,6 +87,7 @@ else:
         b = get_bestest(bests, problem)
 
         if problem.is_finished(b):
+            final_fitness = problem.get_fitness(b)
             break
 
         # Calculate the new probabilist models #
@@ -94,4 +107,4 @@ else:
 
 
     print '[', rank, '] finished. Sending... ',
-    comm.send(core_data, dest=0, tag=rank)
+    comm.send({'ind': b, 'fitness': final_fitness}, dest=0, tag=rank)
