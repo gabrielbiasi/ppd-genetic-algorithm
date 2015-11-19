@@ -61,9 +61,3 @@ class Schwefel():
             string += ", " if i+1 < AMOUNT_NUM else " "
 
         return string+"]"
-
-    def get_data(self):
-        return self.data
-
-    def set_data(self, data):
-        self.data = data

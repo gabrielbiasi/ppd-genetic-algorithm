@@ -61,10 +61,3 @@ class Rastrigin():
             string += ", " if i+1 < AMOUNT_NUM else " "
 
         return string+"]"
-
-    def set_data(self, data):
-        self.data = data
-
-    def get_data(self):
-        return self.data
-

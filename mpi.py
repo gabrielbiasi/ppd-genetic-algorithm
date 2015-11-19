@@ -62,16 +62,16 @@ if rank == 0:
         best_boy = get_bestest(pop, problem)
 
         ## 25% ##
-        comm.send({'problem': problem, 'models': generate_models(pop, best_boy, 0.25), 'data': problem.get_data()}, dest=1, tag=0)
+        comm.send({'problem': problem, 'models': generate_models(pop, best_boy, 0.25)}, dest=1, tag=0)
 
         ## 50% ##
-        comm.send({'problem': problem, 'models': generate_models(pop, best_boy, 0.50), 'data': problem.get_data()}, dest=2, tag=0)
+        comm.send({'problem': problem, 'models': generate_models(pop, best_boy, 0.50)}, dest=2, tag=0)
 
         ## 75% ##
-        comm.send({'problem': problem, 'models': generate_models(pop, best_boy, 0.75), 'data': problem.get_data()}, dest=3, tag=0)
+        comm.send({'problem': problem, 'models': generate_models(pop, best_boy, 0.75)}, dest=3, tag=0)
 
         ## 100% ##
-        comm.send({'problem': problem, 'models': generate_models(pop, best_boy, 1.00), 'data': problem.get_data()}, dest=4, tag=0)
+        comm.send({'problem': problem, 'models': generate_models(pop, best_boy, 1.00)}, dest=4, tag=0)
 
         print '[MASTER] Waiting... '
 
@@ -110,7 +110,6 @@ else:
     if recv_data:
         problem = recv_data['problem']
         models = recv_data['models']
-        problem.set_data(recv_data['data'])
 
         print '[', rank, ']', 'Models: ', len(models)
         last = 999
