@@ -20,7 +20,7 @@ def magic(populations, models, problem):
                         populations[model_id][model_item_id][bit_id] = '1'
                     else:
                         populations[model_id][model_item_id][bit_id] = '0'
-                loop = problem.validate_individual(populations[model_id][model_item_id])
+                loop, populations[model_id][model_item_id] = problem.validate_individual(populations[model_id][model_item_id])
 
 
 def get_bests(populations, models, problem):

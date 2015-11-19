@@ -10,6 +10,7 @@ from slave  import generate_populations, magic, get_bests, get_bestest
 
 from schwefel import Schwefel
 from traveling_salesman import TravelingSalesman
+from radio_network import RadioNetwork
 
 comm = MPI.COMM_WORLD
 
@@ -48,8 +49,7 @@ if rank == 0:
         print "Rastrigim not implemented"
         sys.exit(0)
     elif option == 4:
-        print "Radio not implemented"
-        sys.exit(0)
+        problem = RadioNetwork()
     else:
         sys.exit(0)
 
