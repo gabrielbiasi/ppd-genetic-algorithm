@@ -56,21 +56,22 @@ if rank == 0:
 
         # Generate the population to create the probabilist models #
         pop = util.new_population(problem)
+        print '[MASTER] Population size: ', len(pop)
 
         # Get the best to use as a model to the others #
-        b = get_bestest(pop, problem)
+        best_boy = get_bestest(pop, problem)
 
         ## 25% ##
-        comm.send({'problem': problem, 'models': generate_models(pop, b, 0.25), 'data': problem.get_data()}, dest=1, tag=0)
+        comm.send({'problem': problem, 'models': generate_models(pop, best_boy, 0.25), 'data': problem.get_data()}, dest=1, tag=0)
 
         ## 50% ##
-        comm.send({'problem': problem, 'models': generate_models(pop, b, 0.50), 'data': problem.get_data()}, dest=2, tag=0)
+        comm.send({'problem': problem, 'models': generate_models(pop, best_boy, 0.50), 'data': problem.get_data()}, dest=2, tag=0)
 
         ## 75% ##
-        comm.send({'problem': problem, 'models': generate_models(pop, b, 0.75), 'data': problem.get_data()}, dest=3, tag=0)
+        comm.send({'problem': problem, 'models': generate_models(pop, best_boy, 0.75), 'data': problem.get_data()}, dest=3, tag=0)
 
         ## 100% ##
-        comm.send({'problem': problem, 'models': generate_models(pop, b, 1.00), 'data': problem.get_data()}, dest=4, tag=0)
+        comm.send({'problem': problem, 'models': generate_models(pop, best_boy, 1.00), 'data': problem.get_data()}, dest=4, tag=0)
 
         print '[MASTER] Waiting... '
 
@@ -89,7 +90,7 @@ if rank == 0:
         print '100% > ', problem.show(v[3]), problem.get_fitness(v[3])
 
         # Print the bestest #
-        b = get_bestest(v)
+        b = get_bestest(v, problem)
         print 'BEST > ', problem.show(b), problem.get_fitness(b)
 
         # end! #
@@ -113,14 +114,19 @@ else:
 
         print '[', rank, ']', 'Models: ', len(models)
         last = 999
+        it = 1
         while True:
+            # Generate the population #
             populations = generate_populations(problem, len(models))
 
+            # makes the magic #
             magic(populations, models, problem)
 
+            # Calculate the best individual of probalistic model #
             bests = get_bests(populations, models, problem)
             b = get_bestest(bests, problem)
 
+            # Check if the individual is acceptable #
             if problem.is_finished(b):
                 break
 
@@ -132,13 +138,14 @@ else:
             for model in models:
                 util.mutate_model(model)
 
-            # Learning model
+            # Learning model #
             new = math.fabs(problem.get_fitness(b))
             util.learning(last, new)
             last = new
 
-            print '[', rank, ']', problem.show(b), '\t\t', problem.get_fitness(b),'\t\t', conf.ALPHA
+            print '[', rank, ']','[', it, ']', problem.show(b), '\t\t', problem.get_fitness(b),'\t\t', conf.ALPHA
+            it += 1
 
 
-        print '[', rank, '] finished! ', problem.show(b)
+        print '[', rank, ']', '[', it, ']', 'finished! ', problem.show(b), 'len models:', len(models)
         comm.send(b, dest=0, tag=rank)
