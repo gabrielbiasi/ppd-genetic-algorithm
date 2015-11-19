@@ -52,6 +52,9 @@ class TravelingSalesman:
 
 
     def get_fitness(self, individual):
+        print isinstance(self.data[0], dict)
+        if len(self.data) and isinstance(self.data[0], dict):
+            self.set_data(list(self.data))
         v = []
         origin = int(''.join(individual[0:NUM_BITS_IN_NUM]), 2)
         step = int(''.join(individual[NUM_BITS_IN_NUM:2 * NUM_BITS_IN_NUM]), 2)

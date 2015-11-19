@@ -36,6 +36,6 @@ def get_bests(populations, models, problem):
 def get_bestest(bests, problem):
     b = bests[0]
     for best in bests:
-        if problem.get_fitness(best) < problem.get_fitness(b):
+        if math.fabs(problem.get_fitness(best)) < math.fabs(problem.get_fitness(b)):
             b = best
     return b

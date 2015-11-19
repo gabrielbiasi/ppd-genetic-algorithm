@@ -1,5 +1,5 @@
 """
-hello
+Config variables
 """
 
 ALPHA_INIT = 0.05
