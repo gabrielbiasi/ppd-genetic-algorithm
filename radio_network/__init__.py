@@ -1,13 +1,13 @@
 import math, random, util
 
 
-class RadioNetwork():
+class RadioNetwork():# (x,y)(x,y)
     """ToDo"""
-    NUM_BITS = 5
-    limit_area = 2 ** NUM_BITS
+    NUM_BITS = 5 # 11
+    limit_area = 2 ** NUM_BITS # 2048
     fitness = 0.2 # 80% ?
     covered_area = 0.8 # 80%
-    covered_bs = 10
+    covered_bs = 2
     amount_bs = int(math.ceil(((limit_area**2) * covered_area) / (math.pi * (covered_bs**2))))
 
     def num_bits(self):
@@ -39,20 +39,27 @@ class RadioNetwork():
             for j in xrange(self.amount_bs):
                 if i < j:
                     d = math.sqrt(((v[j*2] - v[i*2])**2) + ((v[j*2+1] - v[i*2+1])**2))
-                    if d > 0:
-                        part1 = self.covered_bs*self.covered_bs*math.acos((d*d + self.covered_bs*self.covered_bs - self.covered_bs*self.covered_bs)/(2*d*self.covered_bs))
-                        part2 = self.covered_bs*self.covered_bs*math.acos((d*d + self.covered_bs*self.covered_bs - self.covered_bs*self.covered_bs)/(2*d*self.covered_bs))
-                        part3 = 0.5*math.sqrt((-d+self.covered_bs+self.covered_bs)*(d+self.covered_bs-self.covered_bs)*(d-self.covered_bs+self.covered_bs)*(d+self.covered_bs+self.covered_bs))
-                        area_intersection += (part1 + part2 + part3)
-                    else:
-                        area_intersection += math.pi * (self.covered_bs ** 2)
-                    """
-                    part1 = self.covered_bs*self.covered_bs*math.acos((d*d)/(2*d*self.covered_bs))
-                    part2 = self.covered_bs*self.covered_bs*math.acos((d*d)/(2*d*self.covered_bs))
-                    part3 = 0.5*math.sqrt((-d+self.covered_bs+self.covered_bs)*(d)*(d)*(d+self.covered_bs+self.covered_bs))
-                    area_intersection += (part1 + part2 + part3)
+                    d = math.fabs(d)##
+                    if d < self.covered_bs*2:##
+                        if d > 0:
+                            
+                            part1 = self.covered_bs*self.covered_bs*math.acos((d*d + self.covered_bs*self.covered_bs - self.covered_bs*self.covered_bs)/(2*d*self.covered_bs))
+                            part2 = self.covered_bs*self.covered_bs*math.acos((d*d + self.covered_bs*self.covered_bs - self.covered_bs*self.covered_bs)/(2*d*self.covered_bs))
+                            part3 = 0.5*math.sqrt((-d+self.covered_bs+self.covered_bs)*(d+self.covered_bs-self.covered_bs)*(d-self.covered_bs+self.covered_bs)*(d+self.covered_bs+self.covered_bs))
+                            area_intersection += (part1 + part2 + part3)
 
-                    """
+                        else:
+                            area_intersection += math.pi * (self.covered_bs ** 2)
+                        """
+                        part1 = self.covered_bs*self.covered_bs*math.acos((d*d)/(2*d*self.covered_bs))
+                        part2 = self.covered_bs*self.covered_bs*math.acos((d*d)/(2*d*self.covered_bs))
+                        part3 = 0.5*math.sqrt((-d+self.covered_bs+self.covered_bs)*(d)*(d)*(d+self.covered_bs+self.covered_bs))
+                        area_intersection += (part1 + part2 + part3)
+
+                        A = ((2*(self.covered_bs**2)) * (math.acos(d/(2*self.covered_bs))) - (0.5*d) * (math.sqrt((4*(self.covered_bs**2)) - (d**2))))
+                        area_intersection += A
+
+                        """
         area_coverage = area_coverage - area_intersection
         return (1.0 - (area_coverage/(self.limit_area**2)))
 
