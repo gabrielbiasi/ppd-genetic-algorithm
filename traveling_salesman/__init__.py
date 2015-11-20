@@ -39,7 +39,7 @@ class TravelingSalesman:
                 destination_city = self.data[j + 1]
             else:
                 destination_city = self.data[v[0]]
-            tour_distance += math.sqrt((math.fabs(destination_city['x'] - from_city['x'])) ** 2 + (math.fabs(destination_city['y'] - from_city['y'])) ** 2) 
+            tour_distance += math.sqrt((math.fabs(destination_city['x'] - from_city['x'])) ** 2 + (math.fabs(destination_city['y'] - from_city['y'])) ** 2)
         return float(tour_distance)
 
 
